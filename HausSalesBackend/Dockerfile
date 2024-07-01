@@ -10,14 +10,14 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["HausSalesBackend/HausSalesBackend.csproj", "HausSalesBackend/"]
-RUN dotnet restore "./HausSalesBackend/./HausSalesBackend.csproj"
+RUN dotnet restore "HausSalesBackend/HausSalesBackend.csproj"
 COPY . .
 WORKDIR "/src/HausSalesBackend"
-RUN dotnet build "./HausSalesBackend.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "HausSalesBackend.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./HausSalesBackend.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "HausSalesBackend.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
