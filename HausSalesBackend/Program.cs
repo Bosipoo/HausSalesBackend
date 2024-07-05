@@ -119,10 +119,14 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsStaging() || app.Environment.IsProduction())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hauz Sales API V1");
+        c.RoutePrefix = string.Empty; // To serve the Swagger UI at the app's root (https://hauzapi.azurewebsites.net/)
+    });
 }
 
 app.UseHttpsRedirection();

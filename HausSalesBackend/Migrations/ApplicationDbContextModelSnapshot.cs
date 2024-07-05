@@ -58,7 +58,7 @@ namespace HausSalesBackend.Migrations
                         new
                         {
                             Id = "1",
-                            CreatedDate = new DateTime(2024, 6, 30, 17, 49, 18, 400, DateTimeKind.Utc).AddTicks(1864),
+                            CreatedDate = new DateTime(2024, 7, 5, 17, 6, 22, 637, DateTimeKind.Utc).AddTicks(9914),
                             Description = "Administrator role",
                             Name = "Admin",
                             NormalizedName = "ADMIN"

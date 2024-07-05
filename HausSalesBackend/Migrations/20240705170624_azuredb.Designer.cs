@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HausSalesBackend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240619161907_usermanagement")]
-    partial class usermanagement
+    [Migration("20240705170624_azuredb")]
+    partial class azuredb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,7 +61,7 @@ namespace HausSalesBackend.Migrations
                         new
                         {
                             Id = "1",
-                            CreatedDate = new DateTime(2024, 6, 19, 16, 19, 5, 947, DateTimeKind.Utc).AddTicks(4064),
+                            CreatedDate = new DateTime(2024, 7, 5, 17, 6, 22, 637, DateTimeKind.Utc).AddTicks(9914),
                             Description = "Administrator role",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
@@ -75,6 +75,10 @@ namespace HausSalesBackend.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Avatar")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
