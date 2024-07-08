@@ -28,5 +28,8 @@ namespace HausSalesBackend.Models
         [Required]
         public string glAccName { get; set; }
 
+        [Required]
+        public bool status { get; set; }
+
     }
 }

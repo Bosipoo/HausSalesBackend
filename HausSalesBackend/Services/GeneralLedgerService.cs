@@ -1,5 +1,7 @@
-﻿using HausSalesBackend.Data;
+﻿using AutoMapper;
+using HausSalesBackend.Data;
 using HausSalesBackend.Models;
+using HausSalesBackend.Models.DTOs;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,10 +10,14 @@ namespace HausSalesBackend.Services
     public class GeneralLedgerService
     {
         private readonly ApplicationDbContext _context;
+        private static int accountNumberCounter = 1;
+        private static readonly object lockObject = new object();
+        private readonly IMapper _mapper;
 
-        public GeneralLedgerService(ApplicationDbContext context)
+        public GeneralLedgerService(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<GeneralLedger>> GetGeneralLedgersAsync()
@@ -24,8 +30,12 @@ namespace HausSalesBackend.Services
             return await _context.GeneralLedgers.FindAsync(id);
         }
 
-        public async Task<GeneralLedger> AddGeneralLedgerAsync(GeneralLedger ledger)
+        public async Task<GeneralLedger> AddGeneralLedgerAsync(GLedgerDto dto)
         {
+            var ledger = _mapper.Map<GeneralLedger>(dto);
+            ledger.glId = Guid.NewGuid();
+            ledger.accountNumber = GenerateAccountNumber();
+
             _context.GeneralLedgers.Add(ledger);
             await _context.SaveChangesAsync();
             return ledger;
@@ -68,6 +78,21 @@ namespace HausSalesBackend.Services
         private bool LedgerExists(Guid id)
         {
             return _context.GeneralLedgers.Any(e => e.glId == id);
+        }
+
+        private string GenerateAccountNumber()
+        {
+            const string prefix = "GL"; // Two-letter prefix
+            const int numberOfDigits = 6; // Number of digits following the prefix
+            string accountNumber;
+
+            lock (lockObject)
+            {
+                accountNumber = $"{prefix}{accountNumberCounter.ToString($"D{numberOfDigits}")}";
+                accountNumberCounter++;
+            }
+
+            return accountNumber;
         }
     }
 }

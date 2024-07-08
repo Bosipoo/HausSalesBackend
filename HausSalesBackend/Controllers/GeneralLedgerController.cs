@@ -1,4 +1,5 @@
 ﻿using HausSalesBackend.Models;
+using HausSalesBackend.Models.DTOs;
 using HausSalesBackend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
@@ -17,10 +18,15 @@ namespace HausSalesBackend.Controllers
         }
 
         [HttpPost("AddLedger")]
-        public async Task<ActionResult<GeneralLedger>> PostGeneralLedger(GeneralLedger ledger)
+        public async Task<IActionResult> AddGeneralLedger([FromBody] GLedgerDto dto)
         {
-            var createdGeneralLedger = await _generalLedgerService.AddGeneralLedgerAsync(ledger);
-            return CreatedAtAction("GetGeneralLedger", new { id = createdGeneralLedger.glId }, createdGeneralLedger);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var ledger = await _generalLedgerService.AddGeneralLedgerAsync(dto);
+            return Ok(ledger);
         }
 
         [HttpGet("GetLedgers")]

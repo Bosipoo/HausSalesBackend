@@ -82,6 +82,8 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IUserAccountService, UserAccountService>();
 builder.Services.AddScoped<ISaleService, SaleService>();
 
+builder.Services.AddAutoMapper(typeof(HausSalesBackend.Mappings.MappingProfile));
+
 builder.Services.AddControllers();
 
 builder.Services.AddAuthorization(options =>
@@ -119,15 +121,12 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment() || app.Environment.IsStaging() || app.Environment.IsProduction())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hauz Sales API V1");
-        c.RoutePrefix = string.Empty; // To serve the Swagger UI at the app's root (https://hauzapi.azurewebsites.net/)
-    });
-}
+//if (app.Environment.IsDevelopment())
+//{
+    
+//}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
