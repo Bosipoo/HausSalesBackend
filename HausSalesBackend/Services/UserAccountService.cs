@@ -121,6 +121,12 @@ namespace HausSalesBackend.Services
         }
 
 
+        public async Task SignOutAsync()
+        {
+            await _signInManager.SignOutAsync();
+        }
+
+
         public async Task<string> ExternalLoginAsync(ExternalLoginModel model)
         {
             var info = new UserLoginInfo(model.Provider, model.IdToken, model.Provider);

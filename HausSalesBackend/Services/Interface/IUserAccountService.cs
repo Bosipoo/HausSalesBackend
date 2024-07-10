@@ -8,6 +8,7 @@ namespace HausSalesBackend.Services.Interface
     {
         Task<object> SignUpAsync(SignUpModel model, string role);
         Task<object> LoginAsync(LoginModel model);
+        Task SignOutAsync();
         Task<string> ExternalLoginAsync(ExternalLoginModel model);
         Task<string> ExternalLoginCallbackAsync();
         AuthenticationProperties ConfigureExternalAuthenticationProperties(string provider, string redirectUrl);

@@ -37,6 +37,13 @@ namespace HausSalesBackend.Controllers
             return Ok(result);
         }
 
+
+        [HttpPost("SignOut")]
+        public async Task<IActionResult> SignOut()
+        {
+            await _userAccountService.SignOutAsync();
+            return Ok(new { message = "Signed out successfully" });
+        }
         // GET: api/Account/ExternalLogin
         //[HttpGet("ExternalLogin")]
         //public IActionResult ExternalLogin(string provider, string returnUrl = null)

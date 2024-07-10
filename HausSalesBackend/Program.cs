@@ -93,9 +93,9 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend",
+    options.AddPolicy("AllowAll",
         builder => builder
-            .WithOrigins("http://localhost:3001")
+            .AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader());
 });
@@ -132,7 +132,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors("AllowFrontend");
+app.UseCors("AllowAll");
 
 app.MapControllers();
 

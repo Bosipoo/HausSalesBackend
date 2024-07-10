@@ -1,11 +1,13 @@
 ﻿using HausSalesBackend.Models;
 using HausSalesBackend.Models.DTOs;
 using HausSalesBackend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 
 namespace HausSalesBackend.Controllers
 {
+    [Authorize]
     [Route("api")]
     [ApiController]
     public class GeneralLedgerController : ControllerBase
