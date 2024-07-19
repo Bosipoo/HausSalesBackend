@@ -58,7 +58,7 @@ namespace HausSalesBackend.Migrations
                         new
                         {
                             Id = "1",
-                            CreatedDate = new DateTime(2024, 7, 6, 7, 48, 56, 49, DateTimeKind.Utc).AddTicks(1256),
+                            CreatedDate = new DateTime(2024, 7, 19, 14, 53, 7, 643, DateTimeKind.Utc).AddTicks(3932),
                             Description = "Administrator role",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
@@ -230,8 +230,10 @@ namespace HausSalesBackend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("SSID")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("SSID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<string>("TypeCode")
                         .IsRequired()

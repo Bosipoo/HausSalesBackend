@@ -9,6 +9,7 @@ namespace HausSalesBackend.Mappings
         public MappingProfile()
         {
             CreateMap<GLedgerDto, GeneralLedger>();
+            CreateMap<PropertyDto, Property>();
         }
     }
 }

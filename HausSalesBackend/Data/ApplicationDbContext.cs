@@ -26,7 +26,16 @@ namespace HausSalesBackend.Data
                       .IsRequired();
             });
 
-            modelBuilder.Entity<Property>().Property(p => p.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Property>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id)
+                      .UseIdentityColumn();
+
+                entity.Property(e => e.SSID)
+                      .HasDefaultValueSql("gen_random_uuid()");
+            });
+
             modelBuilder.Entity<SalesRepresentative>().Property(p => p.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Prospect>().Property(p => p.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Sale>()

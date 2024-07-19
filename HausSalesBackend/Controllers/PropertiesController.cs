@@ -1,4 +1,5 @@
 ﻿using HausSalesBackend.Models;
+using HausSalesBackend.Models.DTOs;
 using HausSalesBackend.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +17,7 @@ namespace HausSalesBackend.Controllers
         }
 
         [HttpPost("AddProperty")]
-        public async Task<ActionResult<Property>> AddProperty(Property property)
+        public async Task<ActionResult<Property>> AddProperty(PropertyDto property)
         {
             var createdProperty = await _propertyService.AddPropertyAsync(property);
             return CreatedAtAction(nameof(GetProperty), new { id = createdProperty.Id }, createdProperty);
@@ -51,7 +52,7 @@ namespace HausSalesBackend.Controllers
         [HttpPut("UpdateProperty/{id}")]
         public async Task<IActionResult> UpdateProperty(int id, Property property)
         {
-            if (id != property.Id)
+            if (!id.Equals( property.Id))
             {
                 return BadRequest();
             }

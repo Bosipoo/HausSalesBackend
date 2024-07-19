@@ -81,6 +81,8 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped<IUserAccountService, UserAccountService>();
 builder.Services.AddScoped<ISaleService, SaleService>();
+builder.Services.AddScoped<IPropertyService, PropertyService>();
+
 
 builder.Services.AddAutoMapper(typeof(HausSalesBackend.Mappings.MappingProfile));
 
@@ -93,11 +95,13 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
-        builder => builder
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+    options.AddPolicy("AllowSpecificOrigins",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3001", "http://localhost:3000", "https://hauz-sales-app.vercel.app/")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
 });
 
 
@@ -132,7 +136,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors("AllowAll");
+
+app.UseCors("AllowSpecificOrigins");
 
 app.MapControllers();
 

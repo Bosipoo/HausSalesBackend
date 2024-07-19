@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HausSalesBackend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240705170624_azuredb")]
-    partial class azuredb
+    [Migration("20240719145308_properties")]
+    partial class properties
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,7 +61,7 @@ namespace HausSalesBackend.Migrations
                         new
                         {
                             Id = "1",
-                            CreatedDate = new DateTime(2024, 7, 5, 17, 6, 22, 637, DateTimeKind.Utc).AddTicks(9914),
+                            CreatedDate = new DateTime(2024, 7, 19, 14, 53, 7, 643, DateTimeKind.Utc).AddTicks(3932),
                             Description = "Administrator role",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
@@ -170,6 +170,9 @@ namespace HausSalesBackend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("status")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("tempAccName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -230,8 +233,10 @@ namespace HausSalesBackend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("SSID")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("SSID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<string>("TypeCode")
                         .IsRequired()

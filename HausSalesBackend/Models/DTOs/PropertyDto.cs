@@ -1,16 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace HausSalesBackend.Models
+﻿namespace HausSalesBackend.Models.DTOs
 {
-    public class Property
+    public class PropertyDto
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
         public Guid SSID { get; set; }
-
         public string ProjectCode { get; set; } = string.Empty!;
         public string Description { get; set; } = string.Empty!;
         public string Address { get; set; } = string.Empty!;

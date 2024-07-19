@@ -39,7 +39,7 @@ namespace HausSalesBackend.Controllers
         }
 
         [HttpGet("GetLedgers/{id}")]
-        public async Task<ActionResult<GeneralLedger>> GetGeneralLedger(int id)
+        public async Task<ActionResult<GeneralLedger>> GetGeneralLedger(Guid id)
         {
             var product = await _generalLedgerService.GetGeneralLedgerByIdAsync(id);
             if (product == null)

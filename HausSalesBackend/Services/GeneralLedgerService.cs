@@ -25,7 +25,7 @@ namespace HausSalesBackend.Services
             return await _context.GeneralLedgers.ToListAsync();
         }
 
-        public async Task<GeneralLedger> GetGeneralLedgerByIdAsync(int id)
+        public async Task<GeneralLedger> GetGeneralLedgerByIdAsync(Guid id)
         {
             return await _context.GeneralLedgers.FindAsync(id);
         }

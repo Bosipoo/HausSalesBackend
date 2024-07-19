@@ -1,16 +1,21 @@
-﻿using HausSalesBackend.Data;
+﻿using AutoMapper;
+using HausSalesBackend.Data;
 using HausSalesBackend.Models;
+using HausSalesBackend.Models.DTOs;
+using HausSalesBackend.Services.Interface;
 using Microsoft.EntityFrameworkCore;
 
 namespace HausSalesBackend.Services
 {
-    public class PropertyService
+    public class PropertyService : IPropertyService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public PropertyService(ApplicationDbContext context)
+        public PropertyService(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<Property>> GetPropertiesAsync()
@@ -23,11 +28,12 @@ namespace HausSalesBackend.Services
             return await _context.Properties.FindAsync(id);
         }
 
-        public async Task<Property> AddPropertyAsync(Property property)
+        public async Task<Property> AddPropertyAsync(PropertyDto property)
         {
-            _context.Properties.Add(property);
+            var prop = _mapper.Map<Property>(property);
+            _context.Properties.Add(prop);
             await _context.SaveChangesAsync();
-            return property;
+            return prop;
         }
 
         public async Task<bool> UpdatePropertyAsync(Property property)
