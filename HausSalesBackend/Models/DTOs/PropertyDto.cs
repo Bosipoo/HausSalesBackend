@@ -14,11 +14,7 @@
         public int NoOfFractions { get; set; }
         public string Moniker { get; set; } = string.Empty!;
         public bool Active { get; set; }
-        public string TypeName { get; set; } = string.Empty!;
-        public string TypeCode { get; set; } = string.Empty!;
-        public int NoOfUnits { get; set; }
-        public int NoOfFractionsPerUnit { get; set; }
-        public string TypeDescription { get; set; } = string.Empty!;
+        public int PropertyTypeId { get; set; }
     }
 
 }

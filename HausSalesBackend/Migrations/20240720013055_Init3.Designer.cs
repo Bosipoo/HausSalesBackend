@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HausSalesBackend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240719145308_properties")]
-    partial class properties
+    [Migration("20240720013055_Init3")]
+    partial class Init3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,7 +61,7 @@ namespace HausSalesBackend.Migrations
                         new
                         {
                             Id = "1",
-                            CreatedDate = new DateTime(2024, 7, 19, 14, 53, 7, 643, DateTimeKind.Utc).AddTicks(3932),
+                            CreatedDate = new DateTime(2024, 7, 20, 1, 30, 54, 443, DateTimeKind.Utc).AddTicks(3245),
                             Description = "Administrator role",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
@@ -214,12 +214,6 @@ namespace HausSalesBackend.Migrations
                     b.Property<int>("NoOfFractions")
                         .HasColumnType("integer");
 
-                    b.Property<int>("NoOfFractionsPerUnit")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("NoOfUnits")
-                        .HasColumnType("integer");
-
                     b.Property<decimal>("OffPlanBulletDisc")
                         .HasColumnType("numeric");
 
@@ -233,26 +227,48 @@ namespace HausSalesBackend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("SSID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasDefaultValueSql("gen_random_uuid()");
+                    b.Property<int>("PropertyTypeId")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("TypeCode")
+                    b.Property<Guid>("SSID")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PropertyTypeId");
+
+                    b.ToTable("Properties");
+                });
+
+            modelBuilder.Entity("HausSalesBackend.Models.PropertyType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("NoOfFractionsPerUnit")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("NoOfUnits")
+                        .HasColumnType("integer");
 
                     b.Property<string>("TypeDescription")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("TypeName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Properties");
+                    b.ToTable("PropertyTypes");
                 });
 
             modelBuilder.Entity("HausSalesBackend.Models.Prospect", b =>
@@ -626,6 +642,17 @@ namespace HausSalesBackend.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("HausSalesBackend.Models.Property", b =>
+                {
+                    b.HasOne("HausSalesBackend.Models.PropertyType", "PropertyType")
+                        .WithMany()
+                        .HasForeignKey("PropertyTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("PropertyType");
                 });
 
             modelBuilder.Entity("HausSalesBackend.Models.Sale", b =>

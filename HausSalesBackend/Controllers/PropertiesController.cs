@@ -1,10 +1,14 @@
-﻿using HausSalesBackend.Models;
+﻿using HausSalesBackend.Data;
+using HausSalesBackend.Models;
 using HausSalesBackend.Models.DTOs;
 using HausSalesBackend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HausSalesBackend.Controllers
 {
+    [Authorize]
     [Route("api")]
     [ApiController]
     public class PropertiesController : ControllerBase
@@ -17,10 +21,62 @@ namespace HausSalesBackend.Controllers
         }
 
         [HttpPost("AddProperty")]
-        public async Task<ActionResult<Property>> AddProperty(PropertyDto property)
+        public async Task<ActionResult<Property>> AddProperty([FromBody] PropertyDto property)
         {
-            var createdProperty = await _propertyService.AddPropertyAsync(property);
-            return CreatedAtAction(nameof(GetProperty), new { id = createdProperty.Id }, createdProperty);
+            try
+            {
+                var createdProperty = await _propertyService.AddPropertyAsync(property);
+                return CreatedAtAction(nameof(GetProperty), new { id = createdProperty.Id }, createdProperty);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("AddPropertyType")]
+        public async Task<IActionResult> AddPropertyType([FromBody] PropertyType propertyType)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var createdPropertyType = await _propertyService.AddPropertyTypeAsync(propertyType);
+                return CreatedAtAction(nameof(GetPropertyTypeById), new { id = createdPropertyType.Id }, createdPropertyType);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("GetPropertyType")]
+        public async Task<IActionResult> GetPropertyType()
+        {
+            var propertyType = await _propertyService.GetPropertiesTypeAsync();
+
+            if (propertyType == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(propertyType);
+        }
+
+        [HttpGet("GetPropertyTypeById/{id}")]
+        public async Task<IActionResult> GetPropertyTypeById(int id)
+        {
+            var propertyType = await _propertyService.GetPropertyTypeByIdAsync(id);
+
+            if (propertyType == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(propertyType);
         }
 
         // GET: api/Properties

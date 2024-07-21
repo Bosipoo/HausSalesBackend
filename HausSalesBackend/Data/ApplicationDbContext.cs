@@ -11,6 +11,7 @@ namespace HausSalesBackend.Data
 
         public DbSet<GeneralLedger> GeneralLedgers { get; set; }
         public DbSet<Property> Properties { get; set; }
+        public DbSet<PropertyType> PropertyTypes { get; set; }
         public DbSet<SalesRepresentative> SalesRepresentatives { get; set; }
         public DbSet<Prospect> Prospects { get; set; }
         public DbSet<Sale> Sales { get; set; }
@@ -28,12 +29,10 @@ namespace HausSalesBackend.Data
 
             modelBuilder.Entity<Property>(entity =>
             {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id)
-                      .UseIdentityColumn();
-
-                entity.Property(e => e.SSID)
-                      .HasDefaultValueSql("gen_random_uuid()");
+                entity.HasOne(p => p.PropertyType)
+                      .WithMany()
+                      .HasForeignKey(p => p.PropertyTypeId)
+                      .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<SalesRepresentative>().Property(p => p.Id).ValueGeneratedOnAdd();

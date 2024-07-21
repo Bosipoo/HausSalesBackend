@@ -28,12 +28,20 @@ namespace HausSalesBackend.Services
             return await _context.Properties.FindAsync(id);
         }
 
-        public async Task<Property> AddPropertyAsync(PropertyDto property)
+        public async Task<Property> AddPropertyAsync(PropertyDto propertyDto)
         {
-            var prop = _mapper.Map<Property>(property);
-            _context.Properties.Add(prop);
+            var propertyType = await _context.PropertyTypes.FindAsync(propertyDto.PropertyTypeId);
+            if (propertyType == null)
+            {
+                throw new Exception("Invalid PropertyTypeId");
+            }
+
+            var property = _mapper.Map<Property>(propertyDto);
+            property.PropertyType = propertyType;
+
+            _context.Properties.Add(property);
             await _context.SaveChangesAsync();
-            return prop;
+            return property;
         }
 
         public async Task<bool> UpdatePropertyAsync(Property property)
@@ -70,6 +78,23 @@ namespace HausSalesBackend.Services
             await _context.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<PropertyType> AddPropertyTypeAsync(PropertyType propertyType)
+        {
+            _context.PropertyTypes.Add(propertyType);
+            await _context.SaveChangesAsync();
+            return propertyType;
+        }
+
+        public async Task<IEnumerable<PropertyType>> GetPropertiesTypeAsync()
+        {
+            return await _context.PropertyTypes.ToListAsync();
+        }
+
+        public async Task<PropertyType?> GetPropertyTypeByIdAsync(int id)
+        {
+            return await _context.PropertyTypes.FindAsync(id);
         }
 
         private bool PropertyExists(int id)

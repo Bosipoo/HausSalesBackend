@@ -7,11 +7,28 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HausSalesBackend.Migrations
 {
     /// <inheritdoc />
-    public partial class properties : Migration
+    public partial class Init3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+
+            migrationBuilder.CreateTable(
+                name: "PropertyTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Code = table.Column<string>(type: "text", nullable: false),
+                    NoOfUnits = table.Column<int>(type: "integer", nullable: false),
+                    NoOfFractionsPerUnit = table.Column<int>(type: "integer", nullable: false),
+                    TypeDescription = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PropertyTypes", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Properties",
@@ -19,7 +36,7 @@ namespace HausSalesBackend.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    SSID = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    SSID = table.Column<Guid>(type: "uuid", nullable: false),
                     ProjectCode = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Address = table.Column<string>(type: "text", nullable: false),
@@ -31,17 +48,18 @@ namespace HausSalesBackend.Migrations
                     NoOfFractions = table.Column<int>(type: "integer", nullable: false),
                     Moniker = table.Column<string>(type: "text", nullable: false),
                     Active = table.Column<bool>(type: "boolean", nullable: false),
-                    TypeName = table.Column<string>(type: "text", nullable: false),
-                    TypeCode = table.Column<string>(type: "text", nullable: false),
-                    NoOfUnits = table.Column<int>(type: "integer", nullable: false),
-                    NoOfFractionsPerUnit = table.Column<int>(type: "integer", nullable: false),
-                    TypeDescription = table.Column<string>(type: "text", nullable: false)
+                    PropertyTypeId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Properties", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Properties_PropertyTypes_PropertyTypeId",
+                        column: x => x.PropertyTypeId,
+                        principalTable: "PropertyTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
-            
         }
 
         /// <inheritdoc />
