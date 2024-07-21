@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HausSalesBackend.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api")]
     [ApiController]
     public class PropertiesController : ControllerBase
@@ -35,7 +35,7 @@ namespace HausSalesBackend.Controllers
         }
 
         [HttpPost("AddPropertyType")]
-        public async Task<IActionResult> AddPropertyType([FromBody] PropertyType propertyType)
+        public async Task<ActionResult<PropertyType>> AddPropertyType([FromBody] PTypeDto propertyType)
         {
             if (!ModelState.IsValid)
             {

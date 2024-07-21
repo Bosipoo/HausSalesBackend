@@ -11,7 +11,7 @@ namespace HausSalesBackend.Services.Interface
         Task<bool> UpdatePropertyAsync(Property property);
         Task<bool> DeletePropertyAsync(int id);
         Task<IEnumerable<PropertyType>> GetPropertiesTypeAsync();
-        Task<PropertyType> AddPropertyTypeAsync(PropertyType propertyType);
+        Task<PropertyType> AddPropertyTypeAsync(PTypeDto propertyType);
         Task<PropertyType?> GetPropertyTypeByIdAsync(int id);
     }
 }

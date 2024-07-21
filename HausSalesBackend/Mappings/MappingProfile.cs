@@ -10,6 +10,7 @@ namespace HausSalesBackend.Mappings
         {
             CreateMap<GLedgerDto, GeneralLedger>();
             CreateMap<PropertyDto, Property>();
+            CreateMap<PTypeDto, PropertyType>();
         }
     }
 }

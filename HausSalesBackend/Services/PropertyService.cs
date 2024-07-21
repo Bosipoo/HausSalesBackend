@@ -80,11 +80,13 @@ namespace HausSalesBackend.Services
             return true;
         }
 
-        public async Task<PropertyType> AddPropertyTypeAsync(PropertyType propertyType)
+        public async Task<PropertyType> AddPropertyTypeAsync(PTypeDto propertyType)
         {
-            _context.PropertyTypes.Add(propertyType);
+
+            var prop = _mapper.Map<PropertyType>(propertyType);
+            _context.PropertyTypes.Add(prop);
             await _context.SaveChangesAsync();
-            return propertyType;
+            return prop;
         }
 
         public async Task<IEnumerable<PropertyType>> GetPropertiesTypeAsync()

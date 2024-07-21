@@ -42,6 +42,9 @@ namespace HausSalesBackend.Data
             .WithMany(p => p.Sales)
             .HasForeignKey(s => s.ProspectId);
 
+            modelBuilder.Entity<PropertyType>()
+            .HasKey(p => p.Id);
+
             modelBuilder.Entity<ApplicationRole>().HasData(new ApplicationRole
             {
                 Id = "1",
